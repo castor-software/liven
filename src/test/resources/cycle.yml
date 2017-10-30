@@ -1,0 +1,20 @@
+steps:
+ - name: design
+   type: jhipster
+   model: .yo-rc.json
+ - name: build
+   type: maven
+   model: pom.xml
+ - name: ship
+   type: docker
+   model: src/main/docker/Dockerfile
+ - name: deploy
+   type: docker-compose
+   model: src/main/docker/app.yml
+cycles:
+ - name: generate
+   steps: [design]
+ - name: build
+   steps: [design, ship]
+ - name: full
+   steps: [design, build, ship, deploy]
