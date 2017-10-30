@@ -10,6 +10,7 @@ public class LifeCycleTest extends TestCase {
         ClassLoader classLoader = getClass().getClassLoader();
         File cycle = new File(classLoader.getResource("cycle.yml").getFile());
         l.parseYaml(cycle);
+        l.listCycles();
     }
 
 }

@@ -3,7 +3,10 @@ steps:
    type: jhipster
    model: .yo-rc.json
  - name: build
-   type: maven
+   type: maven-compile
+   model: pom.xml
+ - name: unit test
+   type: maven-test
    model: pom.xml
  - name: ship
    type: docker

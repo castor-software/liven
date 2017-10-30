@@ -1,4 +1,9 @@
 package fr.inria.core;
 
-public abstract class TestStep implements Step {
+import java.io.File;
+
+public abstract class TestStep extends AbstractStep {
+    public TestStep(File model, String name) {
+        super(model, name);
+    }
 }

@@ -1,7 +1,9 @@
 package fr.inria;
 
 import fr.inria.cli.Command;
-import fr.inria.cli.CycleCmd;
+import fr.inria.cli.CyclesCmd;
+import fr.inria.cli.ExploreCmd;
+import fr.inria.cli.VaryCmd;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,13 +13,15 @@ import java.util.Map;
  * Hello world!
  *
  */
-public class App {
+public class Liven {
 
     public static Map<String, Command> commands;
 
     static {
         commands = new HashMap<>();
-        commands.put("cycle", new CycleCmd());
+        commands.put("cycles", new CyclesCmd());
+        commands.put("explore", new ExploreCmd());
+        commands.put("vary", new VaryCmd());
     }
 
     public static void main( String[] args )

@@ -7,11 +7,78 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 public class LifeCycle {
+
+    Set<Step> steps = new HashSet<>();
+    Map<String,List<Step>> cycles = new HashMap<>();
+
+    public boolean containsCycle(String cycle) {
+        return cycles.containsKey(cycle);
+    }
+
+    public void listCycles() {
+
+        for(String cycle: cycles.keySet()) {
+            System.out.println("\t* " + cycle + ":");
+            for(Step s : cycles.get(cycle)) {
+                System.out.println("\t\t- " + s.getName());
+            }
+        }
+    }
+
+    public void runCycle(String cycle) {
+        if(!containsCycle(cycle)) return;
+
+        for(Step s : cycles.get(cycles)) {
+            s.run();
+        }
+    }
+
+
     public LifeCycle() {}
+
+    void build(CyclesInfo info) {
+        for(StepInfo s :info.steps) {
+            if(PluginRegistry.registry.containsKey(s.type)) {
+                Class<? extends AbstractStep> plugin = PluginRegistry.registry.get(s.type);
+                try {
+                    java.lang.reflect.Constructor<? extends AbstractStep> c = plugin.getConstructor(File.class, String.class);
+                    Step step = c.newInstance(s.model, s.name);
+                    if(step != null) {
+                        steps.add(step);
+                    } else {
+                        System.err.println("Problem loading " + s.name + "(" + s.type + ")");
+                    }
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.err.println("Unable to load step '" + s.type + "'");
+            }
+        }
+        for(CycleInfo c : info.cycles) {
+            String name = c.name;
+            List<Step> l = new ArrayList<>();
+            for(String st : c.steps) {
+                if (steps.stream().filter(s -> s.getName().equals(st)).count() == 1) {
+                    Step myStep = steps.stream().filter(s -> s.getName().equals(st)).findFirst().get();
+                    l.add(myStep);
+                } else {
+                    System.err.println("Cycle '" + c.name + "' referenced undefined step '" + st + "'");
+                }
+            }
+            cycles.put(name,l);
+        }
+    }
 
     public void parseYaml(File cycle) throws FileNotFoundException {
         Constructor constructor = new Constructor(CyclesInfo.class);
@@ -21,5 +88,6 @@ public class LifeCycle {
         constructor.addTypeDescription(cycleDescription);
         Yaml yaml = new Yaml(constructor);
         CyclesInfo cyclesInfo = (CyclesInfo) yaml.load(new FileInputStream(cycle));
+        build(cyclesInfo);
     }
 }

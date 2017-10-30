@@ -1,6 +1,11 @@
 package fr.inria.core;
 
-public abstract class ConstructionStep implements Step {
+import java.io.File;
 
+public abstract class ConstructionStep extends AbstractStep {
+
+    public ConstructionStep(File model, String name) {
+        super(model, name);
+    }
 
 }
