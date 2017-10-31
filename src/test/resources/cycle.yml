@@ -5,7 +5,7 @@ steps:
  - name: build
    type: maven-compile
    model: sample-app/pom.xml
- - name: unit test
+ - name: test
    type: maven-test
    model: sample-app/pom.xml
  - name: ship
@@ -14,15 +14,21 @@ steps:
  - name: deploy
    type: docker-compose
    model: sample-app/src/main/docker/app.yml
+ - name: ship2
+   type: generic
+   model: pom.xml
+   extra: mvn package -Pprod dockerfile:build
 cycles:
  - name: generate
    steps: [design]
  - name: build
-   steps: [design, ship]
+   steps: [build, test, ship2]
  - name: full
-   steps: [design, build, ship, deploy]
+   steps: [design, build, test, ship2, deploy]
+ - name: testouille
+   steps: [ship2]
 project:
-  tmp: tmp
-  variants: variants
-  exploration: exploration
-  original: sample-app
+ tmp: tmp
+ variants: variants
+ exploration: exploration
+ original: sample-app

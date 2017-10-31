@@ -24,7 +24,7 @@ public class JHipsterGenerate extends ConstructionStep {
     public void run(File dir) {
         Runtime rt = Runtime.getRuntime();
         try {
-            Process pr = rt.exec(new String[] { "yo", "jhipster" }, new String[] {}, dir);
+            Process pr = rt.exec(new String[] { "yo", "jhipster" }, null, dir);
             StreamGobbler errorGobbler = new StreamGobbler(pr.getErrorStream());
             StreamGobbler outputGobbler = new StreamGobbler(pr.getInputStream());
             errorGobbler.start();

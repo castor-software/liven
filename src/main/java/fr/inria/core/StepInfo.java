@@ -6,6 +6,7 @@ public class StepInfo {
     String name;
     String type;
     File model;
+    String extra;
 
     public void setName(String name) {
         this.name = name;
@@ -18,4 +19,9 @@ public class StepInfo {
     public void setModel(File model) {
         this.model = model;
     }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
+    }
+
 }

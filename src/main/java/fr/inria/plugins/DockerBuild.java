@@ -45,7 +45,7 @@ public class DockerBuild extends ConstructionStep {
         DockerClient docker = DockerClientBuilder.getInstance(config).build();*/
         Runtime rt = Runtime.getRuntime();
         try {
-            Process pr = rt.exec(new String[] {"docker","build","-t", name, dockerfile.getAbsolutePath() }, new String[] {}, dir);
+            Process pr = rt.exec(new String[] {"docker","build","-t", name, dockerfile.getParentFile().getAbsolutePath() }, null, dir);
             StreamGobbler errorGobbler = new StreamGobbler(pr.getErrorStream());
             StreamGobbler outputGobbler = new StreamGobbler(pr.getInputStream());
             errorGobbler.start();

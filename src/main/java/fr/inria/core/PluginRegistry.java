@@ -15,5 +15,6 @@ public class PluginRegistry {
         registry.put("jhipster", JHipsterGenerate.class);
         registry.put("docker", DockerBuild.class);
         registry.put("docker-compose", DockerCompose.class);
+        registry.put("generic", GenericConstruction.class);
     }
 }

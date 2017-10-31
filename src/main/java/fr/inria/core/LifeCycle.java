@@ -25,7 +25,7 @@ public class LifeCycle {
         for(String cycle: cycles.keySet()) {
             System.out.println("\t* " + cycle + ":");
             for(Step s : cycles.get(cycle)) {
-                System.out.println("\t\t- " + s.getName());
+                System.out.println("\t\t- " + s.getName() + " (" + s.getType() +")");
             }
         }
     }
@@ -51,8 +51,15 @@ public class LifeCycle {
             if(PluginRegistry.registry.containsKey(s.type)) {
                 Class<? extends AbstractStep> plugin = PluginRegistry.registry.get(s.type);
                 try {
-                    java.lang.reflect.Constructor<? extends AbstractStep> c = plugin.getConstructor(File.class, String.class);
-                    Step step = c.newInstance(s.model, s.name);
+                    Step step;
+                    if(s.extra != null) {
+                        java.lang.reflect.Constructor<? extends AbstractStep> c = plugin.getConstructor(File.class, String.class, String.class);
+
+                        step = c.newInstance(s.model, s.name, s.extra);
+                    } else {
+                        java.lang.reflect.Constructor<? extends AbstractStep> c = plugin.getConstructor(File.class, String.class);
+                        step = c.newInstance(s.model, s.name);
+                    }
                     if(step != null) {
                         steps.add(step);
                     } else {

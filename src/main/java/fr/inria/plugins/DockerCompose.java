@@ -24,7 +24,7 @@ public class DockerCompose extends ConstructionStep {
     public void run(File dir) {
         Runtime rt = Runtime.getRuntime();
         try {
-            Process pr = rt.exec(new String[] { "docker-compose", dockerComposeFile.getAbsolutePath() }, new String[] {}, dir);
+            Process pr = rt.exec(new String[] { "docker-compose", dockerComposeFile.getAbsolutePath() }, null, dir);
 
             pr.waitFor();
 
