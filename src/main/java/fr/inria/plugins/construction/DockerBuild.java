@@ -1,4 +1,4 @@
-package fr.inria.plugins;
+package fr.inria.plugins.construction;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;

@@ -1,6 +1,6 @@
 package fr.inria.core;
 
-import fr.inria.plugins.*;
+import fr.inria.plugins.construction.*;
 
 import java.util.HashMap;
 import java.util.Map;

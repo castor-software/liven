@@ -1,4 +1,4 @@
-package fr.inria.plugins;
+package fr.inria.plugins.construction;
 
 import fr.inria.core.TestStep;
 import org.apache.maven.shared.invoker.*;
