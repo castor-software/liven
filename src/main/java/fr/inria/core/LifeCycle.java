@@ -12,6 +12,7 @@ import java.util.*;
 
 public class LifeCycle {
 
+    ProjectInfo projectInfo;
     Set<Step> steps = new HashSet<>();
     Map<String,List<Step>> cycles = new HashMap<>();
 
@@ -32,8 +33,13 @@ public class LifeCycle {
     public void runCycle(String cycle) {
         if(!containsCycle(cycle)) return;
 
-        for(Step s : cycles.get(cycles)) {
-            s.run();
+        for(Step s : cycles.get(cycle)) {
+
+            System.out.println( "------------------------------------------------------------------------" );
+            System.out.println("Running " + s.getName());
+            System.out.println( "------------------------------------------------------------------------" );
+
+            s.run(projectInfo.original);
         }
     }
 
@@ -78,6 +84,7 @@ public class LifeCycle {
             }
             cycles.put(name,l);
         }
+        projectInfo = info.project;
     }
 
     public void parseYaml(File cycle) throws FileNotFoundException {
@@ -85,6 +92,7 @@ public class LifeCycle {
         TypeDescription cycleDescription = new TypeDescription(CyclesInfo.class);
         cycleDescription.addPropertyParameters("steps", StepInfo.class);
         cycleDescription.addPropertyParameters("cycles", CycleInfo.class);
+        cycleDescription.addPropertyParameters("project", ProjectInfo.class);
         constructor.addTypeDescription(cycleDescription);
         Yaml yaml = new Yaml(constructor);
         CyclesInfo cyclesInfo = (CyclesInfo) yaml.load(new FileInputStream(cycle));

@@ -16,5 +16,11 @@ public class CyclesInfo {
         this.cycles = cycles;
     }
 
+    ProjectInfo project;
+
+    public void setProject(ProjectInfo project) {
+        this.project = project;
+    }
+
 
 }

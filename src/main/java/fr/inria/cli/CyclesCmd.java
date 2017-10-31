@@ -9,18 +9,18 @@ public class CyclesCmd implements Command {
 
     @Override
     public String getUsage() {
-        return "lvn cycles";
+        return "lvn cycles [<cycle>]";
     }
 
     @Override
     public String getDescription() {
 
-        return "List available cycles";
+        return "List available cycles or run the specified cycle on original";
     }
 
     @Override
     public boolean checkUsage(String[] args) {
-        if(args.length > 0)
+        if(args.length > 1)
             return false;
         else
             return true;
@@ -35,7 +35,11 @@ public class CyclesCmd implements Command {
         try {
             lifeCycle.parseYaml(cycleFile);
 
-            lifeCycle.listCycles();
+            if(args.length == 0) {
+                lifeCycle.listCycles();
+            } else {
+                lifeCycle.runCycle(args[0]);
+            }
 
         } catch (FileNotFoundException e) {
             System.err.println("[Error] No cycle.yml found");

@@ -1,6 +1,7 @@
 package fr.inria.plugins;
 
 import fr.inria.core.ConstructionStep;
+import fr.inria.utils.StreamGobbler;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,11 +21,14 @@ public class JHipsterGenerate extends ConstructionStep {
     }
 
     @Override
-    public void run() {
+    public void run(File dir) {
         Runtime rt = Runtime.getRuntime();
         try {
-            Process pr = rt.exec("yo jhipster");
-
+            Process pr = rt.exec(new String[] { "yo", "jhipster" }, new String[] {}, dir);
+            StreamGobbler errorGobbler = new StreamGobbler(pr.getErrorStream());
+            StreamGobbler outputGobbler = new StreamGobbler(pr.getInputStream());
+            errorGobbler.start();
+            outputGobbler.start();
             pr.waitFor();
 
         } catch (IOException e) {

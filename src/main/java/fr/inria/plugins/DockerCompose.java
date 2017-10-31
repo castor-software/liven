@@ -19,11 +19,12 @@ public class DockerCompose extends ConstructionStep {
         super(dockerComposeFile, name);
         this.dockerComposeFile = dockerComposeFile;
     }
+
     @Override
-    public void run() {
+    public void run(File dir) {
         Runtime rt = Runtime.getRuntime();
         try {
-            Process pr = rt.exec("docker-compose " + dockerComposeFile);
+            Process pr = rt.exec(new String[] { "docker-compose", dockerComposeFile.getAbsolutePath() }, new String[] {}, dir);
 
             pr.waitFor();
 

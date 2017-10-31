@@ -5,6 +5,7 @@ import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import fr.inria.core.ConstructionStep;
+import fr.inria.utils.StreamGobbler;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +15,7 @@ public class DockerBuild extends ConstructionStep {
     static Random rng = new Random();
 
     File dockerfile;
-    String name = "liven-img-";
+    String name = "liven-img";
 
     @Override
     public String getType() {
@@ -26,8 +27,9 @@ public class DockerBuild extends ConstructionStep {
         this.dockerfile = dockerfile;
         name += rng.nextInt(100000);
     }
+
     @Override
-    public void run() {
+    public void run(File dir) {
 
         /*DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
                 .withDockerHost("tcp://my-docker-host.tld:2376")
@@ -43,8 +45,11 @@ public class DockerBuild extends ConstructionStep {
         DockerClient docker = DockerClientBuilder.getInstance(config).build();*/
         Runtime rt = Runtime.getRuntime();
         try {
-            Process pr = rt.exec("docker build -t " + name + " " + dockerfile);
-
+            Process pr = rt.exec(new String[] {"docker","build","-t", name, dockerfile.getAbsolutePath() }, new String[] {}, dir);
+            StreamGobbler errorGobbler = new StreamGobbler(pr.getErrorStream());
+            StreamGobbler outputGobbler = new StreamGobbler(pr.getInputStream());
+            errorGobbler.start();
+            outputGobbler.start();
             pr.waitFor();
 
         } catch (IOException e) {

@@ -1,19 +1,19 @@
 steps:
  - name: design
    type: jhipster
-   model: .yo-rc.json
+   model: sample-app/.yo-rc.json
  - name: build
    type: maven-compile
-   model: pom.xml
+   model: sample-app/pom.xml
  - name: unit test
    type: maven-test
-   model: pom.xml
+   model: sample-app/pom.xml
  - name: ship
    type: docker
-   model: src/main/docker/Dockerfile
+   model: sample-app/src/main/docker/Dockerfile
  - name: deploy
    type: docker-compose
-   model: src/main/docker/app.yml
+   model: sample-app/src/main/docker/app.yml
 cycles:
  - name: generate
    steps: [design]
@@ -21,3 +21,8 @@ cycles:
    steps: [design, ship]
  - name: full
    steps: [design, build, ship, deploy]
+project:
+  tmp: tmp
+  variants: variants
+  exploration: exploration
+  original: sample-app
