@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.Map;
 
 public abstract class TransformationStep extends AbstractStep {
-    public TransformationStep(File model, String name) {
-        super(model, name);
+    public TransformationStep(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
+        super(models, name);
     }
 
     public abstract void generateExplorationRoadMap();

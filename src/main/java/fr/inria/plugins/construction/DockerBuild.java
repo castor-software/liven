@@ -1,14 +1,12 @@
 package fr.inria.plugins.construction;
 
-import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DockerClientBuilder;
-import com.github.dockerjava.core.DockerClientConfig;
 import fr.inria.core.ConstructionStep;
+import fr.inria.core.IncorrectYAMLInformationException;
 import fr.inria.utils.StreamGobbler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Random;
 
 public class DockerBuild extends ConstructionStep {
@@ -22,9 +20,13 @@ public class DockerBuild extends ConstructionStep {
         return "docker";
     }
 
-    public DockerBuild(File dockerfile, String name) {
-        super(dockerfile, name);
-        this.dockerfile = dockerfile;
+    public DockerBuild(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
+        super(models, name);
+        if(models.containsKey("Dockerfile")) {
+            this.dockerfile = models.get("Dockerfile");
+        } else {
+            throw new IncorrectYAMLInformationException("Missing Dockerfile in models");
+        }
         name += rng.nextInt(100000);
     }
 

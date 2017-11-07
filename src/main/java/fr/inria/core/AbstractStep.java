@@ -1,6 +1,7 @@
 package fr.inria.core;
 
 import java.io.File;
+import java.util.Map;
 
 public abstract class AbstractStep implements Step {
     String name;
@@ -9,7 +10,7 @@ public abstract class AbstractStep implements Step {
     }
     public abstract String getType();
 
-    public AbstractStep(File model, String name) {
+    public AbstractStep(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
         this.name = name;
     }
 }

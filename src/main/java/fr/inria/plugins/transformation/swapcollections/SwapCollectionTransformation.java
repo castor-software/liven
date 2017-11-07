@@ -1,5 +1,6 @@
 package fr.inria.plugins.transformation.swapcollections;
 
+import fr.inria.core.IncorrectYAMLInformationException;
 import fr.inria.core.TransformationStep;
 
 import java.io.File;
@@ -7,8 +8,8 @@ import java.util.Map;
 
 public class SwapCollectionTransformation extends TransformationStep {
 
-    public SwapCollectionTransformation(File model, String name) {
-        super(model, name);
+    public SwapCollectionTransformation(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
+        super(models, name);
     }
 
     @Override

@@ -1,23 +1,23 @@
 steps:
  - name: design
    type: jhipster
-   model: sample-app/.yo-rc.json
+   models: {json: sample-app/.yo-rc.json}
  - name: build
    type: maven-compile
-   model: sample-app/pom.xml
+   models: {pom: sample-app/pom.xml}
  - name: test
    type: maven-test
-   model: sample-app/pom.xml
+   models: {pom: sample-app/pom.xml}
  - name: ship
    type: docker
-   model: sample-app/src/main/docker/Dockerfile
+   models: {Dockerfile: sample-app/src/main/docker/Dockerfile}
  - name: deploy
    type: docker-compose
-   model: sample-app/src/main/docker/app.yml
+   models: {yml: sample-app/src/main/docker/app.yml}
  - name: ship2
    type: generic
-   model: pom.xml
-   extra: mvn package -Pprod dockerfile:build
+   models: {pom: pom.xml}
+   extra: {cmd: "mvn package -Pprod dockerfile:build"}
 cycles:
  - name: generate
    steps: [design]

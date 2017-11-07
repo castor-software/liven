@@ -1,10 +1,12 @@
 package fr.inria.plugins.construction;
 
 import fr.inria.core.ConstructionStep;
+import fr.inria.core.IncorrectYAMLInformationException;
 import org.apache.maven.shared.invoker.*;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Map;
 
 public class MavenCompile extends ConstructionStep {
 
@@ -15,9 +17,13 @@ public class MavenCompile extends ConstructionStep {
         return "maven-compile";
     }
 
-    public MavenCompile(File pom, String name) {
-        super(pom, name);
-        this.pom = pom;
+    public MavenCompile(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
+        super(models, name);
+        if(models.containsKey("pom")) {
+            this.pom = models.get("pom");
+        } else {
+            throw new IncorrectYAMLInformationException("Missing pom in models");
+        }
     }
 
     @Override

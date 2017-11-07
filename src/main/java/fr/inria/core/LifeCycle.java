@@ -53,12 +53,12 @@ public class LifeCycle {
                 try {
                     Step step;
                     if(s.extra != null) {
-                        java.lang.reflect.Constructor<? extends AbstractStep> c = plugin.getConstructor(File.class, String.class, String.class);
+                        java.lang.reflect.Constructor<? extends AbstractStep> c = plugin.getConstructor(Map.class, String.class, Map.class);
 
-                        step = c.newInstance(s.model, s.name, s.extra);
+                        step = c.newInstance(s.models, s.name, s.extra);
                     } else {
-                        java.lang.reflect.Constructor<? extends AbstractStep> c = plugin.getConstructor(File.class, String.class);
-                        step = c.newInstance(s.model, s.name);
+                        java.lang.reflect.Constructor<? extends AbstractStep> c = plugin.getConstructor(Map.class, String.class);
+                        step = c.newInstance(s.models, s.name);
                     }
                     if(step != null) {
                         steps.add(step);

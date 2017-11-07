@@ -1,6 +1,7 @@
 package fr.inria.plugins.construction;
 
 import fr.inria.core.ConstructionStep;
+import fr.inria.core.IncorrectYAMLInformationException;
 import fr.inria.utils.StreamGobbler;
 
 import java.io.File;
@@ -8,16 +9,20 @@ import java.io.IOException;
 import java.util.Map;
 
 public class GenericConstruction extends ConstructionStep {
-    File model;
+    Map<String, File> models;
     String cmd;
-    public GenericConstruction(File model, String name) {
-        super(model, name);
-        this.model = model;
+    public GenericConstruction(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
+        super(models, name);
+        this.models = models;
     }
-    public GenericConstruction(File model, String name, String extra) {
-        super(model, name);
-        this.model = model;
-        this.cmd = extra;
+    public GenericConstruction(Map<String, File> models, String name, Map<String, String> extra) throws IncorrectYAMLInformationException {
+        super(models, name);
+        this.models = models;
+        if(extra.containsKey("cmd")) {
+            this.cmd = extra.get("cmd");
+        } else {
+            throw new IncorrectYAMLInformationException("extra does not contain a cmd field");
+        }
     }
 
     @Override

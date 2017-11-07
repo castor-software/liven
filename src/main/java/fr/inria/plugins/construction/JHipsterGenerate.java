@@ -1,10 +1,12 @@
 package fr.inria.plugins.construction;
 
 import fr.inria.core.ConstructionStep;
+import fr.inria.core.IncorrectYAMLInformationException;
 import fr.inria.utils.StreamGobbler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class JHipsterGenerate extends ConstructionStep {
 
@@ -15,9 +17,13 @@ public class JHipsterGenerate extends ConstructionStep {
         return "jhipster";
     }
 
-    public JHipsterGenerate(File yoRc, String name) {
-        super(yoRc, name);
-        this.yoRc = yoRc;
+    public JHipsterGenerate(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
+        super(models, name);
+        if(models.containsKey("json")) {
+            this.yoRc = models.get("json");
+        } else {
+            throw new IncorrectYAMLInformationException("Missing Dockerfile in models");
+        }
     }
 
     @Override

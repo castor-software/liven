@@ -1,9 +1,11 @@
 package fr.inria.plugins.construction;
 
 import fr.inria.core.ConstructionStep;
+import fr.inria.core.IncorrectYAMLInformationException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Random;
 
 public class DockerCompose extends ConstructionStep {
@@ -15,9 +17,13 @@ public class DockerCompose extends ConstructionStep {
         return "docker-compose";
     }
 
-    public DockerCompose(File dockerComposeFile, String name) {
-        super(dockerComposeFile, name);
-        this.dockerComposeFile = dockerComposeFile;
+    public DockerCompose(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
+        super(models, name);
+        if(models.containsKey("yml")) {
+            this.dockerComposeFile = models.get("yml");
+        } else {
+            throw new IncorrectYAMLInformationException("Missing yml in models");
+        }
     }
 
     @Override
