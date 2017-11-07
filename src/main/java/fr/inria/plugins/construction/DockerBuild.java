@@ -20,10 +20,10 @@ public class DockerBuild extends ConstructionStep {
         return "docker";
     }
 
-    public DockerBuild(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
-        super(models, name);
-        if(models.containsKey("Dockerfile")) {
-            this.dockerfile = models.get("Dockerfile");
+    public DockerBuild(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
+        super(conf, name);
+        if(conf.containsKey("Dockerfile")) {
+            this.dockerfile = new File(conf.get("Dockerfile"));
         } else {
             throw new IncorrectYAMLInformationException("Missing Dockerfile in models");
         }

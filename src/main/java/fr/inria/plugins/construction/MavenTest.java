@@ -17,10 +17,10 @@ public class MavenTest extends TestStep {
         return "maven-test";
     }
 
-    public MavenTest(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
-        super(models, name);
-        if(models.containsKey("pom")) {
-            this.pom = models.get("pom");
+    public MavenTest(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
+        super(conf, name);
+        if(conf.containsKey("pom")) {
+            this.pom = new File(conf.get("pom"));
         } else {
             throw new IncorrectYAMLInformationException("Missing pom in models");
         }

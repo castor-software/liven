@@ -52,14 +52,8 @@ public class LifeCycle {
                 Class<? extends AbstractStep> plugin = PluginRegistry.registry.get(s.type);
                 try {
                     Step step;
-                    if(s.extra != null) {
-                        java.lang.reflect.Constructor<? extends AbstractStep> c = plugin.getConstructor(Map.class, String.class, Map.class);
-
-                        step = c.newInstance(s.models, s.name, s.extra);
-                    } else {
                         java.lang.reflect.Constructor<? extends AbstractStep> c = plugin.getConstructor(Map.class, String.class);
-                        step = c.newInstance(s.models, s.name);
-                    }
+                        step = c.newInstance(s.conf, s.name);
                     if(step != null) {
                         steps.add(step);
                     } else {

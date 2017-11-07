@@ -5,8 +5,8 @@ import java.util.Map;
 
 public abstract class ConstructionStep extends AbstractStep {
 
-    public ConstructionStep(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
-        super(models, name);
+    public ConstructionStep(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
+        super(conf, name);
     }
 
 }

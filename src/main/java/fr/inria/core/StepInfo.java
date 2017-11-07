@@ -6,8 +6,7 @@ import java.util.Map;
 public class StepInfo {
     String name;
     String type;
-    Map<String, File> models;
-    Map<String, String> extra;
+    Map<String, String> conf;
 
     public void setName(String name) {
         this.name = name;
@@ -17,12 +16,8 @@ public class StepInfo {
         this.type = type;
     }
 
-    public void setModels(Map<String,File> models) {
-        this.models = models;
-    }
-
-    public void setExtra(Map<String, String> extra) {
-        this.extra = extra;
+    public void setConf(Map<String,String> conf) {
+        this.conf = conf;
     }
 
 }

@@ -8,8 +8,8 @@ import java.util.Map;
 
 public class SwapCollectionTransformation extends TransformationStep {
 
-    public SwapCollectionTransformation(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
-        super(models, name);
+    public SwapCollectionTransformation(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
+        super(conf, name);
     }
 
     @Override

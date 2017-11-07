@@ -17,10 +17,10 @@ public class DockerCompose extends ConstructionStep {
         return "docker-compose";
     }
 
-    public DockerCompose(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
-        super(models, name);
-        if(models.containsKey("yml")) {
-            this.dockerComposeFile = models.get("yml");
+    public DockerCompose(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
+        super(conf, name);
+        if(conf.containsKey("yml")) {
+            this.dockerComposeFile = new File(conf.get("yml"));
         } else {
             throw new IncorrectYAMLInformationException("Missing yml in models");
         }

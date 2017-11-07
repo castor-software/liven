@@ -17,10 +17,10 @@ public class MavenCompile extends ConstructionStep {
         return "maven-compile";
     }
 
-    public MavenCompile(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
-        super(models, name);
-        if(models.containsKey("pom")) {
-            this.pom = models.get("pom");
+    public MavenCompile(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
+        super(conf, name);
+        if(conf.containsKey("pom")) {
+            this.pom = new File(conf.get("pom"));
         } else {
             throw new IncorrectYAMLInformationException("Missing pom in models");
         }

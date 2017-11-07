@@ -9,17 +9,13 @@ import java.io.IOException;
 import java.util.Map;
 
 public class GenericConstruction extends ConstructionStep {
-    Map<String, File> models;
+    Map<String, String> conf;
     String cmd;
-    public GenericConstruction(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
-        super(models, name);
-        this.models = models;
-    }
-    public GenericConstruction(Map<String, File> models, String name, Map<String, String> extra) throws IncorrectYAMLInformationException {
-        super(models, name);
-        this.models = models;
-        if(extra.containsKey("cmd")) {
-            this.cmd = extra.get("cmd");
+    public GenericConstruction(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
+        super(conf, name);
+        this.conf = conf;
+        if(conf.containsKey("cmd")) {
+            this.cmd = conf.get("cmd");
         } else {
             throw new IncorrectYAMLInformationException("extra does not contain a cmd field");
         }

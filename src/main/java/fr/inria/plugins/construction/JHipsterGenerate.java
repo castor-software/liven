@@ -17,10 +17,10 @@ public class JHipsterGenerate extends ConstructionStep {
         return "jhipster";
     }
 
-    public JHipsterGenerate(Map<String, File> models, String name) throws IncorrectYAMLInformationException {
-        super(models, name);
-        if(models.containsKey("json")) {
-            this.yoRc = models.get("json");
+    public JHipsterGenerate(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
+        super(conf, name);
+        if(conf.containsKey("json")) {
+            this.yoRc = new File(conf.get("json"));
         } else {
             throw new IncorrectYAMLInformationException("Missing Dockerfile in models");
         }
