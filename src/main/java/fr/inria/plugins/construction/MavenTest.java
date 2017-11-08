@@ -56,7 +56,8 @@ public class MavenTest extends ConstructionStep {
         invoker.setWorkingDirectory(dir);
         try {
             InvocationResult ir = invoker.execute( request );
-            result = new Result(ir.getExitCode(), ir.getExecutionException().getMessage());
+            String message = ir.getExecutionException() == null ? "OK" :  ir.getExecutionException().getMessage();
+            result = new Result(ir.getExitCode(), message);
         } catch (MavenInvocationException e) {
             result = new Result(-1, e.getMessage());
         }

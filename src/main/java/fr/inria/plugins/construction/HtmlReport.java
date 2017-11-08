@@ -19,7 +19,7 @@ public class HtmlReport extends ConstructionStep {
 
     @Override
     public boolean isObliviousToPreviousFailure() {
-        return false;
+        return true;
     }
 
     @Override
