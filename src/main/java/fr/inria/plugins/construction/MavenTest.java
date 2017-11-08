@@ -1,14 +1,15 @@
 package fr.inria.plugins.construction;
 
+import fr.inria.core.AbstractStep;
+import fr.inria.core.ConstructionStep;
 import fr.inria.core.IncorrectYAMLInformationException;
-import fr.inria.core.TestStep;
 import org.apache.maven.shared.invoker.*;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Map;
 
-public class MavenTest extends TestStep {
+public class MavenTest extends ConstructionStep {
 
     File pom;
 
