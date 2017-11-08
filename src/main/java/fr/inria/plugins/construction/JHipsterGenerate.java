@@ -1,11 +1,11 @@
 package fr.inria.plugins.construction;
 
 import fr.inria.core.ConstructionStep;
-import fr.inria.core.IncorrectYAMLInformationException;
+import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
+import fr.inria.core.Result;
 import fr.inria.utils.StreamGobbler;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 
 public class JHipsterGenerate extends ConstructionStep {
@@ -15,6 +15,11 @@ public class JHipsterGenerate extends ConstructionStep {
     @Override
     public String getType() {
         return "jhipster";
+    }
+
+    @Override
+    public boolean isObliviousToPreviousFailure() {
+        return false;
     }
 
     public JHipsterGenerate(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
@@ -27,7 +32,8 @@ public class JHipsterGenerate extends ConstructionStep {
     }
 
     @Override
-    public void run(File dir) {
+    public Result run(File dir) {
+        Result result;
         Runtime rt = Runtime.getRuntime();
         try {
             Process pr = rt.exec(new String[] { "yo", "jhipster" }, null, dir);
@@ -35,12 +41,13 @@ public class JHipsterGenerate extends ConstructionStep {
             StreamGobbler outputGobbler = new StreamGobbler(pr.getInputStream());
             errorGobbler.start();
             outputGobbler.start();
-            pr.waitFor();
+            int status = pr.waitFor();
+            result = new Result(status, errorGobbler.getOutput());
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
+            result = new Result(-1, e.getMessage());
             e.printStackTrace();
         }
+        return result;
     }
 }

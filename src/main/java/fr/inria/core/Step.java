@@ -5,6 +5,7 @@ import java.io.File;
 public interface Step {
     String getName();
     String getType();
+    boolean isObliviousToPreviousFailure();
 
-    void run(File dir);
+    Result run(File dir);
 }

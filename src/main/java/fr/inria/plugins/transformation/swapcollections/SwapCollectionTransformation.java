@@ -1,6 +1,7 @@
 package fr.inria.plugins.transformation.swapcollections;
 
-import fr.inria.core.IncorrectYAMLInformationException;
+import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
+import fr.inria.core.Result;
 import fr.inria.core.TransformationStep;
 
 import java.io.File;
@@ -33,7 +34,12 @@ public class SwapCollectionTransformation extends TransformationStep {
     }
 
     @Override
-    public void run(File dir) {
+    public boolean isObliviousToPreviousFailure() {
+        return false;
+    }
 
+    @Override
+    public Result run(File dir) {
+        return null;
     }
 }

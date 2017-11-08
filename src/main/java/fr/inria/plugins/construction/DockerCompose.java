@@ -1,12 +1,12 @@
 package fr.inria.plugins.construction;
 
 import fr.inria.core.ConstructionStep;
-import fr.inria.core.IncorrectYAMLInformationException;
+import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
+import fr.inria.core.Result;
+import fr.inria.utils.StreamGobbler;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Map;
-import java.util.Random;
 
 public class DockerCompose extends ConstructionStep {
 
@@ -15,6 +15,11 @@ public class DockerCompose extends ConstructionStep {
     @Override
     public String getType() {
         return "docker-compose";
+    }
+
+    @Override
+    public boolean isObliviousToPreviousFailure() {
+        return false;
     }
 
     public DockerCompose(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
@@ -27,18 +32,23 @@ public class DockerCompose extends ConstructionStep {
     }
 
     @Override
-    public void run(File dir) {
+    public Result run(File dir) {
+        Result result;
         Runtime rt = Runtime.getRuntime();
         try {
             Process pr = rt.exec(new String[] { "docker-compose", dockerComposeFile.getAbsolutePath() }, null, dir);
+            StreamGobbler errorGobbler = new StreamGobbler(pr.getErrorStream());
+            StreamGobbler outputGobbler = new StreamGobbler(pr.getInputStream());
+            errorGobbler.start();
+            outputGobbler.start();
+            int status = pr.waitFor();
+            result = new Result(status, errorGobbler.getOutput());
 
-            pr.waitFor();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
+            result = new Result(-1, e.getMessage());
             e.printStackTrace();
         }
+        return result;
 
     }
 }

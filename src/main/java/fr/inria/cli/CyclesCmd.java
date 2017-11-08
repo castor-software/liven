@@ -1,6 +1,7 @@
 package fr.inria.cli;
 
 import fr.inria.core.LifeCycle;
+import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,6 +45,9 @@ public class CyclesCmd implements Command {
         } catch (FileNotFoundException e) {
             System.err.println("[Error] No cycle.yml found");
             //e.printStackTrace();
+        } catch (IncorrectYAMLInformationException e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

@@ -1,16 +1,18 @@
 package fr.inria.plugins.construction;
 
 import fr.inria.core.ConstructionStep;
-import fr.inria.core.IncorrectYAMLInformationException;
+import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
+import fr.inria.core.Result;
 import fr.inria.utils.StreamGobbler;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 
 public class GenericConstruction extends ConstructionStep {
     Map<String, String> conf;
     String cmd;
+    boolean isObliviousToPreviousFailure = false;
+
     public GenericConstruction(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
         super(conf, name);
         this.conf = conf;
@@ -18,6 +20,9 @@ public class GenericConstruction extends ConstructionStep {
             this.cmd = conf.get("cmd");
         } else {
             throw new IncorrectYAMLInformationException("extra does not contain a cmd field");
+        }
+        if(conf.containsKey("oblivious")) {
+            isObliviousToPreviousFailure = conf.get("oblivious").equalsIgnoreCase("true");
         }
     }
 
@@ -27,12 +32,14 @@ public class GenericConstruction extends ConstructionStep {
     }
 
     @Override
-    public void run(File dir) {
+    public boolean isObliviousToPreviousFailure() {
+        return isObliviousToPreviousFailure;
+    }
+
+    @Override
+    public Result run(File dir) {
+        Result result;
         System.out.println("Run '" + cmd + "' in " + dir.getAbsolutePath());
-        /*Map<String, String> env = System.getenv();
-        for (String envName : env.keySet()) {
-            System.out.format("%s=%s%n", envName, env.get(envName));
-        }*/
         Runtime rt = Runtime.getRuntime();
         try {
 
@@ -41,12 +48,13 @@ public class GenericConstruction extends ConstructionStep {
             StreamGobbler outputGobbler = new StreamGobbler(pr.getInputStream());
             errorGobbler.start();
             outputGobbler.start();
-            pr.waitFor();
+            int status = pr.waitFor();
+            result = new Result(status, errorGobbler.getOutput());
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
+            result = new Result(-1, e.getMessage());
             e.printStackTrace();
         }
+        return result;
     }
 }

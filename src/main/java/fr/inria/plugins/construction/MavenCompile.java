@@ -1,7 +1,8 @@
 package fr.inria.plugins.construction;
 
 import fr.inria.core.ConstructionStep;
-import fr.inria.core.IncorrectYAMLInformationException;
+import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
+import fr.inria.core.Result;
 import org.apache.maven.shared.invoker.*;
 
 import java.io.File;
@@ -17,6 +18,11 @@ public class MavenCompile extends ConstructionStep {
         return "maven-compile";
     }
 
+    @Override
+    public boolean isObliviousToPreviousFailure() {
+        return false;
+    }
+
     public MavenCompile(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
         super(conf, name);
         if(conf.containsKey("pom")) {
@@ -27,7 +33,8 @@ public class MavenCompile extends ConstructionStep {
     }
 
     @Override
-    public void run(File dir) {
+    public Result run(File dir) {
+        Result result;
         InvocationRequest request = new DefaultInvocationRequest();
         request.setPomFile( pom );
         request.setGoals( Arrays.asList( "clean", "compile" ) );
@@ -48,10 +55,12 @@ public class MavenCompile extends ConstructionStep {
         invoker.setMavenHome(getMavenHome());
         invoker.setWorkingDirectory(dir);
         try {
-            invoker.execute( request );
+            InvocationResult ir = invoker.execute( request );
+            result = new Result(ir.getExitCode(), ir.getExecutionException().getMessage());
         } catch (MavenInvocationException e) {
-            e.printStackTrace();
+            result = new Result(-1, e.getMessage());
         }
+        return result;
     }
 
     protected File getMavenHome() {

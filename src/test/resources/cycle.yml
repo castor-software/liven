@@ -2,7 +2,7 @@ steps:
  - name: design
    type: jhipster
    conf: {json: sample-app/.yo-rc.json}
- - name: build
+ - name: compile
    type: maven-compile
    conf: {pom: sample-app/pom.xml}
  - name: test
@@ -21,9 +21,9 @@ cycles:
  - name: generate
    steps: [design]
  - name: build
-   steps: [build, test, ship2]
+   steps: [compile, test, ship2]
  - name: full
-   steps: [design, build, test, ship2, deploy]
+   steps: [design, compile, test, ship2, deploy]
  - name: testouille
    steps: [ship2]
 project:

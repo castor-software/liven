@@ -1,5 +1,7 @@
 package fr.inria.core;
 
+import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
+
 import java.io.File;
 import java.util.Map;
 

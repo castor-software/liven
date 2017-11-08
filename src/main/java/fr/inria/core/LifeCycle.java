@@ -1,5 +1,6 @@
 package fr.inria.core;
 
+import fr.inria.core.YamlParsing.*;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -13,40 +14,40 @@ import java.util.*;
 public class LifeCycle {
 
     ProjectInfo projectInfo;
-    Set<Step> steps = new HashSet<>();
-    Map<String,List<Step>> cycles = new HashMap<>();
+    Map<String,Step> steps = new HashMap<>();
 
     public boolean containsCycle(String cycle) {
-        return cycles.containsKey(cycle);
+        return steps.containsKey(cycle);
     }
 
     public void listCycles() {
 
-        for(String cycle: cycles.keySet()) {
-            System.out.println("\t* " + cycle + ":");
-            for(Step s : cycles.get(cycle)) {
-                System.out.println("\t\t- " + s.getName() + " (" + s.getType() +")");
+        for(String cycle: steps.keySet()) {
+            Step step = steps.get(cycle);
+            System.out.println("\t* " + cycle + " (" + step.getType() + ")");
+            if(step instanceof Cycle) {
+                for (Step s : ((Cycle) step).steps) {
+                    System.out.println("\t\t- " + s.getName() + " (" + s.getType() + ")");
+                }
             }
         }
     }
 
     public void runCycle(String cycle) {
         if(!containsCycle(cycle)) return;
+        Step step = steps.get(cycle);
 
-        for(Step s : cycles.get(cycle)) {
+        System.out.println( "------------------------------------------------------------------------" );
+        System.out.println( "Running " + step.getName() );
+        System.out.println( "------------------------------------------------------------------------" );
 
-            System.out.println( "------------------------------------------------------------------------" );
-            System.out.println("Running " + s.getName());
-            System.out.println( "------------------------------------------------------------------------" );
-
-            s.run(projectInfo.original);
-        }
+        step.run(projectInfo.original);
     }
 
 
     public LifeCycle() {}
 
-    void build(CyclesInfo info) {
+    void build(CyclesInfo info) throws IncorrectYAMLInformationException {
         for(StepInfo s :info.steps) {
             if(PluginRegistry.registry.containsKey(s.type)) {
                 Class<? extends AbstractStep> plugin = PluginRegistry.registry.get(s.type);
@@ -55,40 +56,41 @@ public class LifeCycle {
                         java.lang.reflect.Constructor<? extends AbstractStep> c = plugin.getConstructor(Map.class, String.class);
                         step = c.newInstance(s.conf, s.name);
                     if(step != null) {
-                        steps.add(step);
+                        if(steps.containsKey(step.getName())) {
+                            throw new IncorrectYAMLInformationException("Conflicting steps names");
+                        }
+                        steps.put(step.getName(), step);
                     } else {
-                        System.err.println("Problem loading " + s.name + "(" + s.type + ")");
+                        throw new IncorrectYAMLInformationException("Problem loading " + s.name + "(" + s.type + ")");
                     }
-                } catch (NoSuchMethodException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+                    throw new IncorrectYAMLInformationException("YAML parsing failed");
                 }
             } else {
-                System.err.println("Unable to load step '" + s.type + "'");
+                throw new IncorrectYAMLInformationException("Unable to load step '" + s.type + "'");
             }
         }
         for(CycleInfo c : info.cycles) {
             String name = c.name;
-            List<Step> l = new ArrayList<>();
+            if(steps.containsKey(name)) {
+                throw new IncorrectYAMLInformationException("Conflicting steps names (A previously defined step or cycle has the same name.)");
+            }
+            Cycle cycle = new Cycle(name);
             for(String st : c.steps) {
-                if (steps.stream().filter(s -> s.getName().equals(st)).count() == 1) {
-                    Step myStep = steps.stream().filter(s -> s.getName().equals(st)).findFirst().get();
-                    l.add(myStep);
+                if (steps.containsKey(st)) {
+                    Step myStep = steps.get(st);
+                    cycle.addStep(myStep);
                 } else {
-                    System.err.println("Cycle '" + c.name + "' referenced undefined step '" + st + "'");
+                    throw new IncorrectYAMLInformationException("Cycle '" + c.name + "' referenced undefined step '" + st + "'");
                 }
             }
-            cycles.put(name,l);
+            steps.put(name,cycle);
         }
         projectInfo = info.project;
     }
 
-    public void parseYaml(File cycle) throws FileNotFoundException {
+    public void parseYaml(File cycle) throws FileNotFoundException, IncorrectYAMLInformationException {
         Constructor constructor = new Constructor(CyclesInfo.class);
         TypeDescription cycleDescription = new TypeDescription(CyclesInfo.class);
         cycleDescription.addPropertyParameters("steps", StepInfo.class);

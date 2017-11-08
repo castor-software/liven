@@ -1,6 +1,7 @@
 package fr.inria.core;
 
-import java.io.File;
+import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
+
 import java.util.Map;
 
 public abstract class ConstructionStep extends AbstractStep {

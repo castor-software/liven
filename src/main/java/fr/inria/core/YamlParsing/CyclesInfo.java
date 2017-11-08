@@ -1,22 +1,21 @@
-package fr.inria.core;
+package fr.inria.core.YamlParsing;
 
-import java.util.List;
 import java.util.Set;
 
 public class CyclesInfo {
-    Set<StepInfo> steps;
+    public Set<StepInfo> steps;
 
     public void setSteps(Set<StepInfo> steps) {
         this.steps = steps;
     }
 
-    Set<CycleInfo> cycles;
+    public Set<CycleInfo> cycles;
 
     public void setCycles(Set<CycleInfo> cycles) {
         this.cycles = cycles;
     }
 
-    ProjectInfo project;
+    public ProjectInfo project;
 
     public void setProject(ProjectInfo project) {
         this.project = project;

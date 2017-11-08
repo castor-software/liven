@@ -1,12 +1,12 @@
-package fr.inria.core;
+package fr.inria.core.YamlParsing;
 
 import java.io.File;
 import java.util.Map;
 
 public class StepInfo {
-    String name;
-    String type;
-    Map<String, String> conf;
+    public String name;
+    public String type;
+    public Map<String, String> conf;
 
     public void setName(String name) {
         this.name = name;

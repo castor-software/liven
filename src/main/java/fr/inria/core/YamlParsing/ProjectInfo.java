@@ -1,13 +1,13 @@
-package fr.inria.core;
+package fr.inria.core.YamlParsing;
 
 import java.io.File;
 
 public class ProjectInfo {
 
-    File tmp;
-    File variants;
-    File exploration;
-    File original;
+    public File tmp;
+    public File variants;
+    public File exploration;
+    public File original;
 
     public void setTmp(File tmp) {
         this.tmp = tmp;
