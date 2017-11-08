@@ -16,5 +16,8 @@ public class PluginRegistry {
         registry.put("docker", DockerBuild.class);
         registry.put("docker-compose", DockerCompose.class);
         registry.put("generic", GenericConstruction.class);
+        registry.put("pit", PitTest.class);
+        registry.put("cobertura", CoberturaTest.class);
+        registry.put("html-report", HtmlReport.class);
     }
 }

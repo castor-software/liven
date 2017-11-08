@@ -32,7 +32,7 @@ public class CyclesCmd implements Command {
         if(!checkUsage(args)) return; // Should not happen
 
         LifeCycle lifeCycle = new LifeCycle();
-        File cycleFile = new File("cycle.yml");
+        File cycleFile = new File("cycles.yml");
         try {
             lifeCycle.parseYaml(cycleFile);
 
@@ -43,7 +43,7 @@ public class CyclesCmd implements Command {
             }
 
         } catch (FileNotFoundException e) {
-            System.err.println("[Error] No cycle.yml found");
+            System.err.println("[Error] No cycles.yml found");
             //e.printStackTrace();
         } catch (IncorrectYAMLInformationException e) {
             System.err.println(e.getMessage());
