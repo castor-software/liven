@@ -7,19 +7,14 @@ import spoon.compiler.Environment;
 import spoon.processing.AbstractProcessor;
 import spoon.reflect.code.CtCodeSnippetExpression;
 import spoon.reflect.code.CtConstructorCall;
-import spoon.reflect.declaration.CtClass;
-import spoon.reflect.declaration.CtExecutable;
-import spoon.reflect.declaration.CtTypedElement;
-import spoon.reflect.declaration.ModifierKind;
+import spoon.reflect.declaration.*;
 import spoon.reflect.factory.Factory;
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.visitor.filter.TypeFilter;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 public class ExplorationRoadMap {
 
@@ -44,22 +39,12 @@ public class ExplorationRoadMap {
     public void processClass(CtClass clazz) {
         System.out.println("Transform class: " + clazz.getQualifiedName());
         try {
-            clazz.getAllExecutables().stream().forEach(
-                    e -> processExecutable(e)
+            clazz.getElements(new TypeFilter<>(CtConstructorCall.class)).stream().forEach(
+                    cc -> processConstructorCall(cc)
             );
         } catch (Exception e) {
             System.err.println("Error when processing " + clazz.getQualifiedName());
         }
-    }
-
-    public void processExecutable(CtExecutableReference e) {
-        //System.out.println("exec: " + e.getSimpleName());
-        CtExecutable m = e.getDeclaration();
-        if(m == null) return;
-
-        m.getBody().getElements(new TypeFilter<>(CtConstructorCall.class)).stream().forEach(
-            cc -> processConstructorCall(cc)
-        );
     }
 
     public boolean processConstructorCall(CtConstructorCall cc) {

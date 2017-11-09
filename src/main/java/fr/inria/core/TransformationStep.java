@@ -10,9 +10,9 @@ public abstract class TransformationStep extends AbstractStep {
         super(conf, name);
     }
 
-    public abstract void generateExplorationRoadMap();
+    public abstract void generateExplorationRoadMap(File roadMap, Map<String, String> models);
 
-    public abstract void explore(File roadMap, Map<String, File> models);
+    public abstract void explore(File roadMap, File explorationResults, Map<String, String> models);
 
-    public abstract void transform(File explorationResults, Map<String, File> models);
+    public abstract void transform(File explorationResults, Map<String, String> models);
 }

@@ -3,6 +3,7 @@ package fr.inria.plugins.transformation.swapcollections;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import spoon.reflect.declaration.CtElement;
 
 import java.util.HashSet;
 import java.util.Set;
