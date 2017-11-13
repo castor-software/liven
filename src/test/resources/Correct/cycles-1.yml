@@ -1,0 +1,45 @@
+steps:
+ - name: design
+   type: jhipster
+   conf: {json: sample-app/.yo-rc.json}
+ - name: divcol
+   type: swap-collections
+   conf: {
+     pom: sample-app/pom.xml,
+     roadmap: roadmap.json,
+     envelope: envelope.json
+    }
+ - name: compile
+   type: maven-compile
+   conf: {pom: sample-app/pom.xml}
+ - name: test
+   type: maven-test
+   conf: {pom: sample-app/pom.xml}
+ - name: ship
+   type: generic
+   conf: {pom: pom.xml, cmd: "mvn package -Pprod dockerfile:build"}
+ - name: divjvm
+   type: docker-base-image-swap
+   conf: {
+     Dockerfile: sample-app/target/docker/Dockerfile,
+     envelope: images
+    }
+ - name: deploy
+   type: docker-compose
+   conf: {yml: sample-app/src/main/docker/app.yml}
+cycles:
+ - name: generate
+   steps: [design]
+ - name: build
+   steps: [compile, test, ship]
+ - name: full
+   steps: [design, compile, test, ship, deploy]
+ - name: fulldiv
+   steps: [design, divcol, compile, test, ship, divjvm, deploy]
+ - name: testouille
+   steps: [ship]
+project:
+ tmp: tmp
+ variants: variants
+ exploration: exploration
+ original: sample-app

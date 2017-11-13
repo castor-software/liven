@@ -59,7 +59,7 @@ public class SwapCollectionTransformation extends TransformationStep {
 
     @Override
     public String getType() {
-        return null;
+        return "swap-collections";
     }
 
     @Override

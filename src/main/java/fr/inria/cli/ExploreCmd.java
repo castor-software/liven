@@ -1,22 +1,23 @@
 package fr.inria.cli;
 
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
+
+@Parameters(commandDescription = "Explores the envelop of acceptability of a particular cycle")
 public class ExploreCmd implements Command {
 
-    public String getUsage() {
-        return "lvn explore <cycle>";
+    @Parameter(description = "<cycle to explore>", required = true)
+    String cycle;
+
+    @Parameter(names = {"--pre-explore", "-p"}, description = "Stop at roadmap generation")
+    private Boolean amend = false;
+
+    @Override
+    public String getName() {
+        return "explore";
     }
 
-    public String getDescription() {
-        return "Explores the envelop of acceptability of a particular cycle";
-    }
-
-    public boolean checkUsage(String[] args) {
-        if(args.length != 1)
-            return false;
-        return true;
-    }
-
-    public void run(String[] args) {
+    public void run() {
 
     }
 }

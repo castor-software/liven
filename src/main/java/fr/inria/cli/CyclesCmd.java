@@ -1,45 +1,36 @@
 package fr.inria.cli;
 
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
 import fr.inria.core.LifeCycle;
 import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 
+@Parameters(commandDescription = "List available cycles or run the specified cycle on original")
 public class CyclesCmd implements Command {
 
+    @Parameter(description = "<cycle to run>")
+    private String cycle = null;
+
     @Override
-    public String getUsage() {
-        return "lvn cycles [<cycle>]";
+    public String getName() {
+        return "cycles";
     }
 
-    @Override
-    public String getDescription() {
-
-        return "List available cycles or run the specified cycle on original";
-    }
-
-    @Override
-    public boolean checkUsage(String[] args) {
-        if(args.length > 1)
-            return false;
-        else
-            return true;
-    }
-
-    @Override
-    public void run(String args[]) {
-        if(!checkUsage(args)) return; // Should not happen
+    public void run() {
 
         LifeCycle lifeCycle = new LifeCycle();
         File cycleFile = new File("cycles.yml");
         try {
             lifeCycle.parseYaml(cycleFile);
 
-            if(args.length == 0) {
+            if(cycle == null) {
                 lifeCycle.listCycles();
             } else {
-                lifeCycle.runCycle(args[0]);
+                lifeCycle.runCycle(cycle);
             }
 
         } catch (FileNotFoundException e) {

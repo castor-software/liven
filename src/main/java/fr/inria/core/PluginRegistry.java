@@ -1,6 +1,8 @@
 package fr.inria.core;
 
 import fr.inria.plugins.construction.*;
+import fr.inria.plugins.transformation.SwapDockerBaseImageTransformation;
+import fr.inria.plugins.transformation.swapcollections.SwapCollectionTransformation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,5 +21,7 @@ public class PluginRegistry {
         registry.put("pit", PitTest.class);
         registry.put("cobertura", CoberturaTest.class);
         registry.put("html-report", HtmlReport.class);
+        registry.put("swap-collections", SwapCollectionTransformation.class);
+        registry.put("docker-base-image-swap", SwapDockerBaseImageTransformation.class);
     }
 }
