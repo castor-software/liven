@@ -13,8 +13,8 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
-@Parameters(commandDescription = "Explores the envelop of acceptability of a particular cycle")
-public class ExploreCmd implements Command {
+@Parameters(commandDescription = "Create the unexplored acceptability envelope of a particular cycle")
+public class CreateEnvelopeCmd implements Command {
 
     @Parameter(description = "<cycle to explore>", required = true)
     String cycle;
@@ -24,9 +24,10 @@ public class ExploreCmd implements Command {
 
     @Override
     public String getName() {
-        return "explore";
+        return "create";
     }
 
+    @Override
     public void run() {
 
         Project lifeCycle = new Project();
@@ -47,8 +48,7 @@ public class ExploreCmd implements Command {
             }
 
             for(TransformationStep t : transformations) {
-                Envelope envelope = t.getEnvelope();
-                envelope.explore(cy);
+                Envelope envelope = t.buildEnvelope();
                 t.writeEnvelope(envelope);
             }
 
@@ -59,5 +59,6 @@ public class ExploreCmd implements Command {
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
+
     }
 }

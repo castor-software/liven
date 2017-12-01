@@ -63,4 +63,13 @@ public class FileUtils {
         }
         return result;
     }
+
+    public static File getDirOrCreate(File parent, String name) {
+
+        File dir = new File(parent, name);
+        if(!dir.exists()) dir.mkdirs();
+        if(!dir.isDirectory()) System.err.println("Dir: " + dir.getPath() + " should be a directory.");
+
+        return dir;
+    }
 }

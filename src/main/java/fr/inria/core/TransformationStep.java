@@ -1,8 +1,11 @@
 package fr.inria.core;
 
 import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
+import fr.inria.core.transformations.Envelope;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public abstract class TransformationStep extends AbstractStep {
@@ -10,9 +13,28 @@ public abstract class TransformationStep extends AbstractStep {
         super(conf, name);
     }
 
-    public abstract void generateExplorationRoadMap(File roadMap, Map<String, String> models);
+    public abstract Envelope buildEnvelope();
 
-    public abstract void explore(File roadMap, File explorationResults, Map<String, String> models);
+    public abstract Envelope loadEnvelope();
 
-    public abstract void transform(File explorationResults, Map<String, String> models);
+    public abstract boolean hasEnvelope();
+
+    public Envelope getEnvelope() {
+        if(hasEnvelope()) return loadEnvelope();
+        else return buildEnvelope();
+    }
+
+    public abstract void writeEnvelope(Envelope envelope);
+
+    /*public abstract void generateExplorationRoadMap(File roadMap);
+
+    public abstract void explore(File roadMap, File explorationResults);
+
+    public abstract void transform(File explorationResults);*/
+
+    public List<Step> getChildren() {
+        List<Step> res = new ArrayList<>();
+        res.add(this);
+        return res;
+    }
 }

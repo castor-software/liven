@@ -62,4 +62,12 @@ public class Cycle implements Step {
 
         return result;
     }
+
+    public List<Step> getChildren() {
+        List<Step> res = new ArrayList<>();
+        for(Step s : steps) {
+            res.addAll(s.getChildren());
+        }
+        return res;
+    }
 }

@@ -5,6 +5,7 @@ import fr.inria.core.FileUtils;
 import fr.inria.core.Result;
 import fr.inria.core.TransformationStep;
 import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
+import fr.inria.core.transformations.Envelope;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
@@ -21,20 +22,40 @@ public class SwapDockerBaseImageTransformation extends TransformationStep {
     }
 
     @Override
-    public void generateExplorationRoadMap(File roadMap, Map<String, String> models) {
+    public Envelope buildEnvelope() {
+        return null;
+    }
+
+    @Override
+    public Envelope loadEnvelope() {
+        return null;
+    }
+
+    @Override
+    public boolean hasEnvelope() {
+        return false;
+    }
+
+    @Override
+    public void writeEnvelope(Envelope envelope) {
+
+    }
+
+    /*@Override
+    public void generateExplorationRoadMap(File roadMap) {
         throw new NotImplementedException();
     }
 
     @Override
-    public void explore(File roadMap, File explorationResults, Map<String, String> models) {
+    public void explore(File roadMap, File explorationResults) {
 
     }
 
     @Override
-    public void transform(File explorationResults, Map<String, String> models) {
+    public void transform(File explorationResults) {
         Random r = new Random();
         List<String> baseImages = FileUtils.readFileAsList(explorationResults);
-        File dockerfile = new File(models.get("Dockerfile"));
+        File dockerfile = new File(conf.get("Dockerfile"));
 
         List<String> dockerfileStmts = FileUtils.readFileAsList(dockerfile);
 
@@ -47,7 +68,7 @@ public class SwapDockerBaseImageTransformation extends TransformationStep {
                 dockerfileStmts.set(i, stmt);
             }
         }
-    }
+    }*/
 
     @Override
     public String getType() {

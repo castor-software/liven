@@ -4,6 +4,7 @@ import fr.inria.core.FileUtils;
 import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
 import fr.inria.core.Result;
 import fr.inria.core.TransformationStep;
+import fr.inria.core.transformations.Envelope;
 import org.json.JSONException;
 import spoon.Launcher;
 import spoon.MavenLauncher;
@@ -15,14 +16,32 @@ import java.io.File;
 import java.util.Map;
 
 public class SwapCollectionTransformation extends TransformationStep {
-    Map<String, String> conf;
     public SwapCollectionTransformation(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
         super(conf, name);
-        this.conf = conf;
     }
 
     @Override
-    public void generateExplorationRoadMap(File roadMap, Map<String, String> models) {
+    public Envelope buildEnvelope() {
+        return null;
+    }
+
+    @Override
+    public Envelope loadEnvelope() {
+        return null;
+    }
+
+    @Override
+    public boolean hasEnvelope() {
+        return false;
+    }
+
+    @Override
+    public void writeEnvelope(Envelope envelope) {
+
+    }
+
+    /*@Override
+    public void generateExplorationRoadMap(File roadMap) {
         ExplorationRoadMap exp = new ExplorationRoadMap();
 
         File pom = new File(conf.get("pom"));
@@ -48,14 +67,14 @@ public class SwapCollectionTransformation extends TransformationStep {
     }
 
     @Override
-    public void explore(File roadMap, File explorationResults, Map<String, String> models) {
+    public void explore(File roadMap, File explorationResults) {
 
     }
 
     @Override
-    public void transform(File explorationResults, Map<String, String> models) {
+    public void transform(File explorationResults) {
 
-    }
+    }*/
 
     @Override
     public String getType() {

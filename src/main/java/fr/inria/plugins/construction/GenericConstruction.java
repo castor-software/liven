@@ -9,13 +9,11 @@ import java.io.File;
 import java.util.Map;
 
 public class GenericConstruction extends ConstructionStep {
-    Map<String, String> conf;
     String cmd;
     boolean isObliviousToPreviousFailure = false;
 
     public GenericConstruction(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
         super(conf, name);
-        this.conf = conf;
         if(conf.containsKey("cmd")) {
             this.cmd = conf.get("cmd");
         } else {

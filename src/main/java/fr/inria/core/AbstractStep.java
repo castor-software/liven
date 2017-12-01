@@ -10,8 +10,9 @@ public abstract class AbstractStep implements Step {
         return name;
     }
     public abstract String getType();
-
+    public Map<String, String> conf;
     public AbstractStep(Map<String, String> conf, String name) throws IncorrectYAMLInformationException {
         this.name = name;
+        this.conf = conf;
     }
 }

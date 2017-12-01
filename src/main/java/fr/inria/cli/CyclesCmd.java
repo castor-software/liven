@@ -2,12 +2,11 @@ package fr.inria.cli;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
-import fr.inria.core.LifeCycle;
+import fr.inria.core.Project;
 import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 
 @Parameters(commandDescription = "List available cycles or run the specified cycle on original")
 public class CyclesCmd implements Command {
@@ -22,7 +21,7 @@ public class CyclesCmd implements Command {
 
     public void run() {
 
-        LifeCycle lifeCycle = new LifeCycle();
+        Project lifeCycle = new Project();
         File cycleFile = new File("cycles.yml");
         try {
             lifeCycle.parseYaml(cycleFile);
