@@ -47,7 +47,7 @@ public class DependencyVersionModification extends TransformationStep {
 
     @Override
     public String getType() {
-        return null;
+        return "maven-dependencies-version-modification";
     }
 
     @Override

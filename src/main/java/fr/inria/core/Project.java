@@ -8,6 +8,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -37,6 +38,17 @@ public class Project {
 
     public File getTmpRoot() {
         return FileUtils.getDirOrCreate(getDiversityRoot(),"tmp");
+    }
+
+    public void createTmp() {
+        File tmpDir = new File(getDiversityRoot(),"tmp");
+        if(tmpDir.exists()) tmpDir.delete();
+        File original = getOriginalRoot();
+        try {
+            org.apache.commons.io.FileUtils.copyDirectory(original,tmpDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public File getVariantRoot() {

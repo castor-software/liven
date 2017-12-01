@@ -33,6 +33,7 @@ public class ExploreCmd implements Command {
         File cycleFile = new File("cycles.yml");
         try {
             lifeCycle.parseYaml(cycleFile);
+            lifeCycle.createTmp();
             Cycle cy = lifeCycle.getCycle(cycle);
 
             List<TransformationStep> transformations;

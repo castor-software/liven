@@ -87,7 +87,7 @@ public class Envelope extends fr.inria.core.transformations.Envelope {
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
             String g = d.getGroupId();
             String a = d.getArtifactId();
-            URI uri = new URI("http://search.maven.org/solrsearch/select?q=g:%22" + g + "%22+AND+a:%22" + a +"%22&core=gav&rows=20&wt=json");
+            URI uri = new URI("http://search.maven.org/solrsearch/select?q=g:%22" + g + "%22+AND+a:%22" + a +"%22&rows=100&core=gav&wt=json");
             HttpGet request = new HttpGet(uri);
             HttpResponse result = httpClient.execute(request);
             String json = EntityUtils.toString(result.getEntity(), "UTF-8");

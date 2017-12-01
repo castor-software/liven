@@ -21,6 +21,7 @@ public class Liven {
         Liven cm = new Liven();
         Command cycles = new CyclesCmd();
         Command explore = new ExploreCmd();
+        Command create = new CreateEnvelopeCmd();
         Command vary = new VaryCmd();
         Command help = new HelpCmd();
 
@@ -28,6 +29,7 @@ public class Liven {
         commands = new HashMap<>();
         commands.put(cycles.getName(), cycles);
         commands.put(explore.getName(),explore);
+        commands.put(create.getName(),create);
         commands.put(vary.getName(),vary);
         commands.put(help.getName(),help);
 
@@ -35,6 +37,7 @@ public class Liven {
                 .addObject(cm)
                 .addCommand("cycles", cycles)
                 .addCommand("explore", explore)
+                .addCommand("create", create)
                 .addCommand("vary", vary)
                 .addCommand("help", help)
                 .build();
