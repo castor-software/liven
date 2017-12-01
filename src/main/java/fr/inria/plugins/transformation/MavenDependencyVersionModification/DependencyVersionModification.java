@@ -55,8 +55,8 @@ public class DependencyVersionModification extends TransformationStep {
         return false;
     }
 
-    @Override
+    /*@Override
     public Result run(File dir) {
         return null;
-    }
+    }*/
 }

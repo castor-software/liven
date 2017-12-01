@@ -13,20 +13,25 @@ public class Mutation extends fr.inria.core.transformations.Mutation {
     Dependency dependency;
     String newVersion;
     Model model;
+    File pom;
 
-    public Mutation(Dependency dependency, String newVersion, Model model) {
+    public Mutation(Dependency dependency, String newVersion, Model model, File pom) {
         this.dependency = dependency;
         this.newVersion = newVersion;
         this.original = dependency.getVersion();
         this.model = model;
+        this.pom = pom;
     }
 
     @Override
     public void apply() {
+        System.out.println("apply: "
+                + dependency.getGroupId() + "." + dependency.getArtifactId() + ": "
+                + original + " -> " + newVersion);
         dependency.setVersion(newVersion);
         MavenXpp3Writer writer = new MavenXpp3Writer();
         try {
-            writer.write(new FileOutputStream(model.getPomFile()), model);
+            writer.write(new FileOutputStream(pom), model);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,7 +42,7 @@ public class Mutation extends fr.inria.core.transformations.Mutation {
         dependency.setVersion(original);
         MavenXpp3Writer writer = new MavenXpp3Writer();
         try {
-            writer.write(new FileOutputStream(model.getPomFile()), model);
+            writer.write(new FileOutputStream(pom), model);
         } catch (IOException e) {
             e.printStackTrace();
         }

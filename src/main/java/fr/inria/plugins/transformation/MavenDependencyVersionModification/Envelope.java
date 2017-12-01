@@ -38,7 +38,7 @@ public class Envelope extends fr.inria.core.transformations.Envelope {
                 this.mutationPoints.add(mp);
                 List<String> alternatives = getDependencyVersionList(d);
                 for(String version : alternatives) {
-                    mp.addAlternative(new Mutation(d, version, model));
+                    mp.addAlternative(new Mutation(d, version, model,pom));
                 }
             }
 
@@ -66,11 +66,12 @@ public class Envelope extends fr.inria.core.transformations.Envelope {
                 MutationPoint mutationPoint = new MutationPoint(d);
                 JSONArray als = mp.getJSONArray("alternatives");
                 for(int j = 0; j < als.length(); j++) {
-                    mutationPoint.addAlternative(new Mutation(d,als.getString(j),model));
+                    mutationPoint.addAlternative(new Mutation(d,als.getString(j),model,pom));
                 }
+                this.mutationPoints.add(mutationPoint);
             }
 
-
+            System.out.println("coucou");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {

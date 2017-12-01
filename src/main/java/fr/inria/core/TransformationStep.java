@@ -37,4 +37,10 @@ public abstract class TransformationStep extends AbstractStep {
         res.add(this);
         return res;
     }
+
+    @Override
+    public Result run(File dir) {
+        //TODO: FIXME "Transformations should be applied at their proper place in the cycle"
+        return new Result(0,"OK");
+    }
 }

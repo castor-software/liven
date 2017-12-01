@@ -13,13 +13,21 @@ public abstract class Envelope {
 
     public void explore(Cycle cycle) {
         for(MutationPoint mp: mutationPoints) {
+            Set<Mutation> toRemove = new HashSet<>();
             for(Mutation m: mp.alternatives) {
                 m.apply();
                 Result r = cycle.run(Project.getInstance().getTmpRoot());
                 m.revert();
-                if(!r.isSuccess()) mp.removeAlternative(m);
+                if(!r.isSuccess()) toRemove.add(m);
+            }
+            for(Mutation m : toRemove) {
+                mp.removeAlternative(m);
             }
         }
+    }
+
+    public Set<Envelope> split(int nb) {
+        return null;
     }
 
     public abstract void writeToFile(File f);
