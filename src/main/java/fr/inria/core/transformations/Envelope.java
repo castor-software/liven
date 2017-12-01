@@ -5,7 +5,9 @@ import fr.inria.core.Project;
 import fr.inria.core.Result;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public abstract class Envelope {
@@ -24,6 +26,16 @@ public abstract class Envelope {
                 mp.removeAlternative(m);
             }
         }
+    }
+
+    public List<Mutation> getMutations(Cycle cycle) {
+        List<Mutation> mutations = new ArrayList<>();
+        for(MutationPoint mp: mutationPoints) {
+            for(Mutation m: mp.alternatives) {
+                mutations.add(m);
+            }
+        }
+        return mutations;
     }
 
     public Set<Envelope> split(int nb) {

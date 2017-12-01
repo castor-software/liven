@@ -41,21 +41,21 @@ public class Cycle implements Step {
             if(result.status == 0 || step.isObliviousToPreviousFailure()) {
 
                 System.out.println( "------------------------------------------------------------------------" );
-                System.out.println( "Running " + step.getName() );
+                System.out.println( " Running " + step.getName() );
                 System.out.println( "------------------------------------------------------------------------" );
 
                 Result cur = step.run(dir);
                 if(cur.status != 0) {
                     result.status = cur.status;
                     System.out.println( "------------------------------------------------------------------------" );
-                    System.err.println( "Error: " + cur.message );
+                    System.err.println( " Error: " + cur.message );
                     System.out.println( "------------------------------------------------------------------------" );
                 }
 
                 result.message += cur.message;
             } else if (!step.isObliviousToPreviousFailure()) {
                 System.out.println( "------------------------------------------------------------------------" );
-                System.err.println( "Skipping: " + step.getName() );
+                System.err.println( " Skipping: " + step.getName() );
                 System.out.println( "------------------------------------------------------------------------" );
             }
         }

@@ -2,6 +2,7 @@ package fr.inria.core;
 
 import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
 import fr.inria.core.transformations.Envelope;
+import fr.inria.core.transformations.Mutation;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ public abstract class TransformationStep extends AbstractStep {
     public abstract void explore(File roadMap, File explorationResults);
 
     public abstract void transform(File explorationResults);*/
+    public List<Mutation> mutations;
+    public Envelope envelope;
 
     public List<Step> getChildren() {
         List<Step> res = new ArrayList<>();

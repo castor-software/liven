@@ -2,9 +2,7 @@ package fr.inria.cli;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
-import fr.inria.core.Cycle;
-import fr.inria.core.Project;
-import fr.inria.core.TransformationStep;
+import fr.inria.core.*;
 import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
 import fr.inria.core.transformations.Envelope;
 
@@ -37,7 +35,23 @@ public class CreateEnvelopeCmd implements Command {
             lifeCycle.createTmp();
             Cycle cy = lifeCycle.getCycle(cycle);
 
-            List<TransformationStep> transformations;
+            List<Step> steps = cy.getChildren();
+
+            for(Step s : steps) {
+                if(s instanceof TransformationStep) {
+                    TransformationStep t = (TransformationStep) s;
+                    Envelope envelope = t.buildEnvelope();
+                    t.writeEnvelope(envelope);
+                } else {
+                    Result r = s.run(Project.getInstance().getTmpRoot());
+                    if (!r.isSuccess()) {
+                        System.err.println("[Error] A step has failed with no mutation applied!");
+                        break;
+                    }
+                }
+            }
+
+            /*List<TransformationStep> transformations;
             if(transformation != null) {
                 transformations = new LinkedList<>();
                 if(!lifeCycle.containsCycle(transformation))
@@ -51,7 +65,7 @@ public class CreateEnvelopeCmd implements Command {
             for(TransformationStep t : transformations) {
                 Envelope envelope = t.buildEnvelope();
                 t.writeEnvelope(envelope);
-            }
+            }*/
 
         } catch (FileNotFoundException e) {
             System.err.println("[Error] No cycles.yml found");
