@@ -1,5 +1,6 @@
 package fr.inria.core;
 
+import fr.inria.core.YamlParsing.IncorrectYAMLInformationException;
 import jdk.nashorn.api.scripting.JSObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,6 +9,7 @@ import org.json.JSONObject;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class FileUtils {
 
@@ -71,5 +73,13 @@ public class FileUtils {
         if(!dir.isDirectory()) System.err.println("Dir: " + dir.getPath() + " should be a directory.");
 
         return dir;
+    }
+
+    public static String getPropertyOrFail(Map<String, String> map, String name) throws IncorrectYAMLInformationException {
+        if(map.containsKey(name)) {
+            return map.get(name);
+        } else {
+            throw new IncorrectYAMLInformationException("extra does not contain a " + name + " field");
+        }
     }
 }

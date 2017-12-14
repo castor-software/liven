@@ -1,8 +1,12 @@
 package fr.inria.plugins.transformation.MavenDependencyVersionModification;
 
+import fr.inria.core.FileUtils;
+import fr.inria.core.Project;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,6 +27,18 @@ public class Mutation extends fr.inria.core.transformations.Mutation {
         this.pom = pom;
     }
 
+    public JSONObject toJSON() {
+        JSONObject o = new JSONObject();
+        try {
+            o.put("group", dependency.getGroupId());
+            o.put("artifact", dependency.getArtifactId());
+            o.put("version", newVersion);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return o;
+    }
+
     @Override
     public void apply() {
         System.out.println("apply: "
@@ -30,6 +46,7 @@ public class Mutation extends fr.inria.core.transformations.Mutation {
                 + original + " -> " + newVersion);
         dependency.setVersion(newVersion);
         MavenXpp3Writer writer = new MavenXpp3Writer();
+        FileUtils.writeFile(toJSON(), new File(Project.getInstance().getTmpRoot(), "mutant.json"));
         try {
             writer.write(new FileOutputStream(pom), model);
         } catch (IOException e) {

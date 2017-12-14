@@ -160,8 +160,8 @@ public class Project {
                 Class<? extends AbstractStep> plugin = PluginRegistry.registry.get(s.type);
                 try {
                     Step step;
-                        java.lang.reflect.Constructor<? extends AbstractStep> c = plugin.getConstructor(Map.class, String.class);
-                        step = c.newInstance(s.conf, s.name);
+                    java.lang.reflect.Constructor<? extends AbstractStep> c = plugin.getConstructor(Map.class, String.class);
+                    step = c.newInstance(s.conf, s.name);
                     if(step != null) {
                         if(steps.containsKey(step.getName())) {
                             throw new IncorrectYAMLInformationException("Conflicting steps names");
@@ -172,7 +172,7 @@ public class Project {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    throw new IncorrectYAMLInformationException("YAML parsing failed");
+                    throw new IncorrectYAMLInformationException("YAML parsing failed for step " + s.name + "(" + s.type + ")");
                 }
             } else {
                 throw new IncorrectYAMLInformationException("Unable to load step '" + s.type + "'");

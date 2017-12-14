@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class DependencyVersionModificationTest extends TestCase {
     public void testGetDependencyVersionList() throws Exception {
 
-        DependencyVersionModification d = new DependencyVersionModification(new HashMap<>(),"");
+        //DependencyVersionModification d = new DependencyVersionModification(new HashMap<>(),"");
         //d.getDependencyVersionList();
     }
 

@@ -25,5 +25,6 @@ public class PluginRegistry {
         registry.put("swap-collections", SwapCollectionTransformation.class);
         registry.put("docker-base-image-swap", SwapDockerBaseImageTransformation.class);
         registry.put("maven-dependencies-version-modification", DependencyVersionModification.class);
+        registry.put("exploit-test", ExploitTest.class);
     }
 }
